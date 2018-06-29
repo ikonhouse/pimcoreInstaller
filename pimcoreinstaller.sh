@@ -92,6 +92,9 @@ fi
 
   #create databases and perform same actions as mysql_secure_installation
   sudo mysql --user=root <<_EOF_
+  SET GLOBAL innodb_file_format = barracuda;
+  SET GLOBAL innodb_file_per_table = 1;
+  SET GLOBAL innodb_large_prefix = 'on';
   CREATE DATABASE ${databaseName};
   CREATE USER '${databaseUser}'@'localhost' IDENTIFIED BY '${dbuserPassword}';
   GRANT ALL ON ${databaseName}.* TO '${databaseUser}'@'localhost' IDENTIFIED BY '${dbuserPassword}' WITH GRANT OPTION;
