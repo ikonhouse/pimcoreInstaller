@@ -1,6 +1,8 @@
 #!/bin/bash
 set -x
 
+#PLATFORM if you are running this on windows or even a virtual machine on windows set this to: WINDOWS otherwise set it to LINUX
+platform=WINDOWS
 #Database settings
 db_root_password=dbPassword
 databaseName=pimcoredb
@@ -111,7 +113,9 @@ _EOF_
 sudo systemctl restart mysql.service
 
 #setup vhost file
-  sudo echo "<VirtualHost *:80>
+sudo touch /etc/apache2/sites-available/${vhname}.conf
+
+sudo echo "<VirtualHost *:80>
        ServerAdmin $SvrAdmin
        DocumentRoot $DocRoot
        ServerName $SvrName
@@ -128,8 +132,10 @@ sudo systemctl restart mysql.service
 
   </VirtualHost>" >> /etc/apache2/sites-available/${vhname}.conf
 
+  sudo a2dissite *
   sudo a2ensite ${vhname}.conf
   sudo a2enmod rewrite
+
 
   sudo systemctl restart apache2.service
 
@@ -147,8 +153,15 @@ sudo chown -R www-data:www-data $ProjectRoot/pimcore/
 sudo chmod -R 755 $ProjectRoot/pimcore/
 
 # install pimcore
-php bin/install pimcore:install --symlink --profile empty --no-interaction \
-    --admin-username admin --admin-password admin \
-    --mysql-username $databaseUser --mysql-password $dbuserPassword --mysql-database $databaseName
+if [ "$platform" = "WINDOWS" ]; then
+  php bin/install pimcore:install --profile empty --no-interaction \
+      --admin-username admin --admin-password admin \
+      --mysql-username $databaseUser --mysql-password $dbuserPassword --mysql-database $databaseName
+else
+  php bin/install pimcore:install --symlink --profile empty --no-interaction \
+      --admin-username admin --admin-password admin \
+      --mysql-username $databaseUser --mysql-password $dbuserPassword --mysql-database $databaseName
+fi
+
 
 sudo rm $DocRoot/install.php
