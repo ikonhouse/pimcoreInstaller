@@ -44,7 +44,7 @@ sudo add-apt-repository ppa:ondrej/php -y
 sudo apt update
 
 # PHP extensions
-sudo apt install -y php7.1 libapache2-mod-php7.1 php7.1-common php7.1-mbstring php7.1-xmlrpc php7.1-soap php7.1-gd php7.1-xml php7.1-intl php7.1-mysql php7.1-cli php7.1-mcrypt php7.1-ldap php7.1-bz2 php7.1-zip php7.1-curl composer unzip bzip2
+sudo apt install -y php7.1 libapache2-mod-php7.1 php7.1-common php7.1-mbstring php7.1-xmlrpc php7.1-soap php7.1-gd php7.1-xml php7.1-intl php7.1-mysql php7.1-cli php7.1-mcrypt php7.1-ldap php7.1-bz2 php7.1-zip php7.1-curl composer unzip bzip2 html2text wkhtmltopdf
 sudo apt-get install -y php7.1-apcu php7.1-imagick php7.1-redis
 
 # Extension packages
