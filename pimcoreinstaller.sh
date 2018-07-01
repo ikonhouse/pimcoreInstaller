@@ -8,6 +8,7 @@ db_root_password=dbPassword
 databaseName=pimcoredb
 databaseUser=pimcoreuser
 dbuserPassword=dbuserpw
+$mySqlConfPath=/etc/mysql/my.cnf
 #location of php.ini
 phpinifile=/etc/php/7.1/apache2/php.ini
 #php timezone (remember to escape(\) slash(/) character)
@@ -90,9 +91,20 @@ fi
   #allow_url_fopen = On       // in php.ini:allow_url_fopen = On
   sudo sed -i 's/^;* *allow_url_fopen = .*/allow_url_fopen = On/' $phpinifile
   #date.timezone = $phpTimezone //in php.ini:;date.timezone =
-  sudo sed -i 's/^;* *date.timezone =.*/date.timezone = '$phpTimezone'/' $phpinifile
+  sudo sed -i 's#^;* *date.timezone =.*#date.timezone = '$phpTimezone'#' $phpinifile
 
   #create databases and perform same actions as mysql_secure_installation
+  echo "
+[mysqld]
+
+innodb_file_format     = Barracuda
+innodb_file_format_max = Barracuda
+innodb_file_per_table  = 1
+innodb_large_prefix
+" >> $mySqlConfPath
+
+  
+  
   sudo mysql --user=root <<_EOF_
   CREATE DATABASE ${databaseName};
   CREATE USER '${databaseUser}'@'localhost' IDENTIFIED BY '${dbuserPassword}';
@@ -103,9 +115,6 @@ fi
   DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
   DROP DATABASE IF EXISTS test;
   DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';
-  SET GLOBAL innodb_file_format = barracuda;
-  SET GLOBAL innodb_file_per_table = 1;
-  SET GLOBAL innodb_large_prefix = 'on';
   FLUSH PRIVILEGES;
 _EOF_
 
@@ -165,5 +174,6 @@ fi
 
 
 sudo rm $DocRoot/install.php
-sudo rm $DocRoot/pimcore-install.zip
+sudo rm $ProjectRoot/pimcore/pimcore-install.zip
+sudo rm $ProjectRoot/pimcore/var/logs/dev.log
 sudo chmod -R 755 $ProjectRoot/pimcore/
