@@ -94,9 +94,6 @@ fi
 
   #create databases and perform same actions as mysql_secure_installation
   sudo mysql --user=root <<_EOF_
-  SET GLOBAL innodb_file_format = barracuda;
-  SET GLOBAL innodb_file_per_table = 1;
-  SET GLOBAL innodb_large_prefix = 'on';
   CREATE DATABASE ${databaseName};
   CREATE USER '${databaseUser}'@'localhost' IDENTIFIED BY '${dbuserPassword}';
   GRANT ALL ON ${databaseName}.* TO '${databaseUser}'@'localhost' IDENTIFIED BY '${dbuserPassword}' WITH GRANT OPTION;
@@ -106,6 +103,9 @@ fi
   DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
   DROP DATABASE IF EXISTS test;
   DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';
+  SET GLOBAL innodb_file_format = barracuda;
+  SET GLOBAL innodb_file_per_table = 1;
+  SET GLOBAL innodb_large_prefix = 'on';
   FLUSH PRIVILEGES;
 _EOF_
 
@@ -150,7 +150,7 @@ sudo unzip pimcore-install.zip
 
 #set directory rights
 sudo chown -R www-data:www-data $ProjectRoot/pimcore/
-sudo chmod -R 755 $ProjectRoot/pimcore/
+sudo chmod -R 777 $ProjectRoot/pimcore/
 
 # install pimcore
 if [ "$platform" = "WINDOWS" ]; then
@@ -165,3 +165,5 @@ fi
 
 
 sudo rm $DocRoot/install.php
+sudo rm $DocRoot/pimcore-install.zip
+sudo chmod -R 755 $ProjectRoot/pimcore/
