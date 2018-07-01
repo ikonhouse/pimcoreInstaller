@@ -176,4 +176,5 @@ fi
 sudo rm $DocRoot/install.php
 sudo rm $ProjectRoot/pimcore/pimcore-install.zip
 sudo rm $ProjectRoot/pimcore/var/logs/dev.log
-sudo chmod -R 755 $ProjectRoot/pimcore/
+#have to change the access rights
+#sudo chmod -R 755 $ProjectRoot/pimcore/
