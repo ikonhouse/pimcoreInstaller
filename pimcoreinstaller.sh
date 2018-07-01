@@ -131,7 +131,7 @@ sudo echo "<VirtualHost *:80>
        CustomLog \${APACHE_LOG_DIR}/access.log combined
 
   </VirtualHost>" >> /etc/apache2/sites-available/${vhname}.conf
-
+  cd /etc/apache2/sites-available/
   sudo a2dissite *
   sudo a2ensite ${vhname}.conf
   sudo a2enmod rewrite
