@@ -8,7 +8,7 @@ db_root_password=dbPassword
 databaseName=pimcoredb
 databaseUser=pimcoreuser
 dbuserPassword=dbuserpw
-$mySqlConfPath=/etc/mysql/my.cnf
+mySqlConfPath=/etc/mysql/my.cnf
 #location of php.ini
 phpinifile=/etc/php/7.1/apache2/php.ini
 #php timezone (remember to escape(\) slash(/) character)
